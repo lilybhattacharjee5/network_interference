@@ -15,7 +15,7 @@ The try-database-connection notebook helps test whether the OONI metadb has been
 ## Calculating rates between date ranges
 **Required packages**: pandas, sqlalchemy, sys, time
 
-The calculate\_rates.py takes two required arguments (start date, end date) and one optional argument (filename for resulting table). To generate a table representing aggregate data including the strict / loose rates over the year 2019, run the following in the repo directory:
+The calculate\_rates.py script takes two required arguments (start date, end date) and one optional argument (filename for resulting table). To generate a table representing aggregate data including the strict / loose rates over the year 2019, run the following in the repo directory:
 
 ```
 python3 calculate_rates.py 01-01-2019 12-31-2019
