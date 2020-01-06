@@ -13,6 +13,8 @@ The yearly-interference-analysis file includes EDA, strict / loose rate network 
 The try-database-connection notebook helps test whether the OONI metadb has been set up correctly in postgres.
 
 ## Calculating rates between date ranges
+**Required packages**: pandas, sqlalchemy, sys, time
+
 The calculate\_rates.py takes two required arguments (start date, end date) and one optional argument (filename for resulting table). To generate a table representing aggregate data including the strict / loose rates over the year 2019, run the following in the repo directory:
 
 ```
