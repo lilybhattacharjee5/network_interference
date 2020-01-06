@@ -1,6 +1,9 @@
 import pandas as pd
 import sqlalchemy as sql
 import sys
+import time
+
+start_time = time.time()
 
 # user passes in MM-DD-YYYY date formats
 start_date = sys.argv[1]
@@ -13,11 +16,11 @@ if len(sys.argv) > 3: filename = sys.argv[3]
 cc_col = "probe_cc as country_code"
 confirmed_col = "count(case when confirmed then 1 end) as num_confirmed_interference"
 anomaly_col = "count(case when anomaly then 1 end) as num_anomaly"
-not_confirmed_col = "count(case when not confirmed then 1 end) as num_no_confirmed_interference"
+not_confirmed_col = "count(*) - count(case when confirmed then 1 end) as num_no_confirmed_interference"
 
 # define rate column formats
-strict_rate = "cast(agg_meas.num_confirmed_interference as decimal) / (agg_meas.num_confirmed_interference + agg_meas.num_no_confirmed_interference) as strict_rate"
-loose_rate = "(cast(agg_meas.num_anomaly as decimal) + cast(agg_meas.num_confirmed_interference as decimal)) / (agg_meas.num_confirmed_interference + agg_meas.num_no_confirmed_interference) as loose_rate"
+strict_rate = "case when agg_meas.num_confirmed_interference + agg_meas.num_no_confirmed_interference > 0 then cast(agg_meas.num_confirmed_interference as decimal) / cast(agg_meas.num_confirmed_interference + agg_meas.num_no_confirmed_interference as decimal) else 0 end as strict_rate"
+loose_rate = "case when agg_meas.num_confirmed_interference + agg_meas.num_no_confirmed_interference > 0 then (cast(agg_meas.num_anomaly as decimal)) / cast(agg_meas.num_confirmed_interference + agg_meas.num_no_confirmed_interference as decimal) else 0 end as loose_rate"
 
 # create column selection phrases
 agg_meas_cols = ", ".join([cc_col, confirmed_col, anomaly_col, not_confirmed_col])
@@ -31,9 +34,9 @@ report_condition = "report.test_start_time between '" + start_date + "' AND '" +
 command = "select *, " + rate_cols + " from (select " + agg_meas_cols  + " from (select * from measurement where " + meas_condition + ") meas left join (select * from report where " + report_condition + ") rep on meas.report_no = rep.report_no group by probe_cc) agg_meas"
 
 # print command and filename for now (debugging + metadb access issues)
-print(command + "\n\n" filename)
+print(command + "\n\n" + filename)
 
-sys.exit(0) # remove when metadb connection can be created
+# sys.exit(0) # remove when metadb connection can be created
 
 sql_engine = sql.create_engine('postgresql:///metadb') # connect to the database...
 
@@ -41,3 +44,4 @@ rates = pd.read_sql_query(command, sql_engine)
 
 rates.to_csv(filename) # write results of sql query to a file
 
+print("--- %s seconds ---" % (time.time() - start_time))
