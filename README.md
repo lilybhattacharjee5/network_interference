@@ -15,6 +15,7 @@ Together, these frequencies can give insight into which countries Internet users
 
 ## Getting started
 **Required language**: Python v. 3.6.0 or later
+
 **Required packages**: pandas, sqlalchemy, sys, time
 
 To set up a copy of the OONI metadb which contains the measurement-specific data needed for this analysis, create an AWS EC2 instance by following [OONI's metadb sharing directions](https://github.com/ooni/sysadmin/blob/master/docs/metadb-sharing.md).
