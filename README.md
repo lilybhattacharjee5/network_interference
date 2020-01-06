@@ -25,7 +25,7 @@ Use MM-DD-YYYY format for the dates. If no filename argument is passed, the resu
 python3 calculate_rates.py 01-01-2019 12-31-2019 rates_2019.txt
 ```
 
-**Note**: A common error that may arise can look like:
+**Note**: A common error can look like the below.
 
 ```
 ERROR: canceling statement due to conflict with recovery
