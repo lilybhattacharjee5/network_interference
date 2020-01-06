@@ -19,6 +19,8 @@ anomaly_col = "count(case when anomaly then 1 end) as num_anomaly"
 not_confirmed_col = "count(*) - count(case when confirmed then 1 end) as num_no_confirmed_interference"
 
 # define rate column formats
+# convert each int to decimal form to set rate column types (prevent fractions from being rounded down to 0)
+# set rate value to 0 if denominator is 0 (prevent division by 0 error)
 strict_rate = "case when agg_meas.num_confirmed_interference + agg_meas.num_no_confirmed_interference > 0 then cast(agg_meas.num_confirmed_interference as decimal) / cast(agg_meas.num_confirmed_interference + agg_meas.num_no_confirmed_interference as decimal) else 0 end as strict_rate"
 loose_rate = "case when agg_meas.num_confirmed_interference + agg_meas.num_no_confirmed_interference > 0 then (cast(agg_meas.num_anomaly as decimal)) / cast(agg_meas.num_confirmed_interference + agg_meas.num_no_confirmed_interference as decimal) else 0 end as loose_rate"
 
@@ -34,7 +36,8 @@ report_condition = "report.test_start_time between '" + start_date + "' AND '" +
 command = "select *, " + rate_cols + " from (select " + agg_meas_cols  + " from (select * from measurement where " + meas_condition + ") meas left join (select * from report where " + report_condition + ") rep on meas.report_no = rep.report_no group by probe_cc) agg_meas"
 
 # print command and filename for now (debugging + metadb access issues)
-print(command + "\n\n" + filename)
+print(command)
+print(filename)
 
 # sys.exit(0) # remove when metadb connection can be created
 
