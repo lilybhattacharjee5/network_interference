@@ -9,7 +9,7 @@ start_time = time.time()
 start_date = sys.argv[1]
 end_date = sys.argv[2]
 
-filename = "rates_" + start_date + "_" + end_date +  ".csv" # filename includes date endpoints by default, can be customized
+filename = "results/rates_" + start_date + "_" + end_date +  ".csv" # filename includes date endpoints by default, can be customized
 if len(sys.argv) > 3: filename = sys.argv[3]
 
 # define column formats of intermediate joined measurement + report table before rates calculation
