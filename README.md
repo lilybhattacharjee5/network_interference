@@ -4,10 +4,12 @@ The script in this repo calculates two summary metrics based on data from the Op
 - **confirmed**: the user was confirmed as being prevented from accessing the input website
 
 We calculate strict and loose rates of network interference in various geographical areas by aggregating how frequently individual anomalous / confirmed events occur in those locations. The formula for the strict rate is:
-$$\frac{\text{number of confirmed events}}{\text{total number of events}}$$
+
+<img src="https://render.githubusercontent.com/render/math?math=\frac{\text{number of confirmed events}}{\text{total number of events}}">
 
 Similarly, the loose rate is calculated as below:
-$$\frac{\text{number of confirmed events} + \text{number of anomalous events}}{\text{total number of events}}$$
+
+<img src="https://render.githubusercontent.com/render/math?math=\frac{\text{number of confirmed events} + \text{number of anomalous events}}{\text{total number of events}}">
 
 Together, these frequencies can give insight into which countries Internet users face issues in regards to accessing information online and how these trends can be associated to real-world events.
 
